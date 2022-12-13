@@ -12,7 +12,7 @@ services:
       - selenium-grid
 
   selenium-hub:
-    image: seleniarm/hub
+    image: selenium/hub:latest
     ports:
       - "4442:4442"
       - "4443:4443"
@@ -28,7 +28,7 @@ services:
       - next-app
 
   selenium-node:
-    image: seleniarm/node-chromium:latest
+    image: selenium/node-chrome:latest
     shm_size: 2g
     depends_on:
       - selenium-hub

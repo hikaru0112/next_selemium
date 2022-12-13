@@ -1,0 +1,7 @@
+version: "3.9"
+services:  
+  selenium-hub:
+    image: seleniarm/hub
+
+  selenium-node:
+    image: seleniarm/node-chromium:latest
