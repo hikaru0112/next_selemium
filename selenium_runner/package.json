@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "test": "mocha index.mjs --timeout 10000"
+  },
+  "dependencies": {
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "selenium-webdriver": "^4.7.0"
+  }
+}

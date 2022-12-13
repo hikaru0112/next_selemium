@@ -1,0 +1,63 @@
+version: "3.9"
+services:
+  next-app:
+    tty: true
+    build: ./selenium_test_next
+    ports:
+      - "8080:3000"
+    volumes:
+      - ./selenium_test_next:/app
+      - next-node-modules:/app/node_modules
+    networks:
+      - selenium-grid
+
+  selenium-hub:
+    image: seleniarm/hub
+    ports:
+      - "4442:4442"
+      - "4443:4443"
+      - "4444:4444"
+    environment:
+      GRID_BROWSER_TIMEOUT: 10000
+      GRID_NEW_SESSION_WAIT_TIMEOUT: 20000
+      GRID_NODE_POLLING: 300
+      GRID_TIMEOUT: 10000
+    networks:
+      - selenium-grid
+    depends_on:
+      - next-app
+
+  selenium-node:
+    image: seleniarm/node-chromium:latest
+    shm_size: 2g
+    depends_on:
+      - selenium-hub
+    ports:
+      - "7901:7900"
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+    networks:
+      - selenium-grid
+
+
+  selenium-test-runner:
+    tty: true
+    build: ./selenium_runner
+    volumes:
+      - ./selenium_runner:/app
+      - test-runner-node-modules:/app/node_modules
+    depends_on:
+      - selenium-node
+    networks:
+      - selenium-grid
+
+
+networks:
+  selenium-grid:
+    driver: bridge
+volumes:
+  next-node-modules:
+  test-runner-node-modules:
+
