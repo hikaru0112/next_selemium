@@ -1,9 +1,6 @@
 import {
   Builder,
-  Browser,
-  By,
-  Key,
-  until
+  WebDriver
 } from 'selenium-webdriver';
 
 import { assert } from 'chai';
@@ -11,7 +8,7 @@ import { assert } from 'chai';
 
 const TIMEOUT_MILLISEC = 10000;
 
-let driver;
+let driver: WebDriver;
 
 describe("サンプルページ", () => {
   before(() => {
